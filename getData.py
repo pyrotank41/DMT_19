@@ -1,14 +1,11 @@
 import json
 import sys
-import argparse
 
 property_datasetf = 'property_dataset.json'
 availability_datasetf = 'availability_dataset.json'
 lease_datasetf = 'lease_dataset.json'
 sales_datasetf = 'sales_dataset.json'
 
-# desired_data = 'PropertyID'
-# desiredID = '542081'
 indexOfID = 0
 propertyID = []
 iter1 = ['Bldg Name','Address', 'City','State' ,'Bldg Class','Build Year', 'Bldg Size', 'Stories','Property Type', 'Leasing Company', 'Primary Owner','Prime?']
@@ -26,11 +23,13 @@ with open(lease_datasetf, 'r') as lease_dataset:
 with open(sales_datasetf, 'r') as sales_dataset:
     sales_dataset_dict = json.load(sales_dataset)
 
+
 def getFromName(Name):
     for item in property_dataset_dict:
         if item['Bldg Name'] == Name:
             break
     return item['PropertyID']
+
 
 def getFromAdress(Address):
     for item in property_dataset_dict:
@@ -115,21 +114,16 @@ if apiCall.lower() == 'address':
 if apiCall.lower() == 'name':
     x = getFromName(building)
 
-finalDict1=json.dumps({z:getMisc(x, misc_field=z, file= 1) for z in iter1})
-finalDict2=json.dumps({y:getMisc(x, misc_field=y, file=4) for y in iter2})
+finalDict1=({z:getMisc(x, misc_field=z, file= 1) for z in iter1})
+finalDict2=({y:getMisc(x, misc_field=y, file=4) for y in iter2})
+
+finalDict1 = json.dumps(finalDict1.update(finalDict2))
 
 with open('response.json', 'w') as file:
     file.write(finalDict1)
-    file.write( finalDict2)
-
 
 file.close()
 property_dataset.close()
 availability_dataset.close()
 lease_dataset.close()
 sales_dataset.close()
-
-
-
-
-
