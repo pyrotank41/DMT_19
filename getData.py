@@ -106,9 +106,10 @@ def getMisc(ID, misc_field='', file = 1): # you can search any field now.
     bldID = getID(ID, file)
     return bldID[misc_field]
 
+
 apiCall = str(sys.argv[0])
 building = str(sys.argv[1])
-
+x=''
 if apiCall.lower() == 'address':
     x = getFromAdress(building)
 if apiCall.lower() == 'name':
