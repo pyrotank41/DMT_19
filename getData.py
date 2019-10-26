@@ -115,7 +115,13 @@ with open('response.json', 'w') as file:
     file.write(finalDict1)
     file.write( finalDict2)
 
-    file.close()
+
+file.close()
+property_dataset.close()
+availability_dataset.close()
+lease_dataset.close()
+sales_dataset.close()
+
 
 
 
