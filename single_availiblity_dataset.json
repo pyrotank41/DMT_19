@@ -1,0 +1,102 @@
+{
+        "Address": "Huntington Blvd",
+        "Amenities": "",
+        "Amenity Comments": "",
+        "Availability Type": "",
+        "Bldg Contig Rent": "0",
+        "Build Out Condition": "Shell Space",
+        "Building Class": "A",
+        "Building Location": "",
+        "Building Name": "Build-to-Suit",
+        "Building Primary Owner": "McShane Construction Company",
+        "Building Size": "155064",
+        "Building Status": "Proposed Short-Term",
+        "Building Sub Class": "",
+        "Building Sub Specialty": "",
+        "Building Sub Type": "Office",
+        "Building Type": "Office",
+        "Calculated Bldg Contig s": {
+            "f": {
+                "": "155064"
+            }
+        },
+        "City": "Hoffman Estates",
+        "Column Spacing Depth": "",
+        "Column Spacing Width": "",
+        "Common Area Maintenance p": {
+            "s": {
+                "f": {
+                    "": ""
+                }
+            }
+        },
+        "Condition": "",
+        "Date Vacant": "",
+        "Date on Market": "09/28/2009",
+        "Earliest Move In Timing": "TBD",
+        "Earliest Move in Date": "",
+        "Floor Contig s": {
+            "f": {
+                "": "26466"
+            }
+        },
+        "Floors": "6th",
+        "In Statistics?": "No",
+        "Is Available": "Yes",
+        "Is Divisibile?": "No",
+        "Is Full Building?": "No",
+        "Is Full Floor?": "Yes",
+        "Is Vacant": "No",
+        "Large Block (Bldg Contig) s": {
+            "f": {
+                "": "155064"
+            }
+        },
+        "Listing Broker Company": "",
+        "Market": "Chicago",
+        "Max Available s": {
+            "f": {
+                "": "26466"
+            }
+        },
+        "Maximum Lease Term Months": "",
+        "Micro Market": "",
+        "Min Available s": {
+            "f": {
+                "": "26466"
+            }
+        },
+        "Minimum Lease Term Months": "",
+        "Move In Date": "",
+        "New Tenant": "",
+        "Operating Expenses p": {
+            "s": {
+                "f": {
+                    "": ""
+                }
+            }
+        },
+        "Postal Code": "60010",
+        "Property Type": "Office",
+        "PropertyID": "29506",
+        "Rent High": "45.5",
+        "Rent Low": "41.5",
+        "Rent Type": "",
+        "Sale Price": "",
+        "Space Condition": "",
+        "Space Type": "Direct",
+        "State": "Illinois",
+        "Sub Market": "Northwest",
+        "Sub Market Cluster": "Suburban",
+        "Sublessor Company": "",
+        "Suite": "",
+        "Taxes p": {
+            "s": {
+                "f": {
+                    "": ""
+                }
+            }
+        },
+        "Vacating Tenant Company": "",
+        "View Space": ""
+    }
