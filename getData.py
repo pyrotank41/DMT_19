@@ -9,7 +9,8 @@ sales_datasetf = 'sales_dataset.json'
 # desiredID = '542081'
 indexOfID = 0
 propertyID = []
-finalDict = []
+iter1 = ['Bldg Name','Address', 'City','State' ,'Bldg Class','Build Year', 'Bldg Size', 'Stories','Property Type', 'Leasing Company', 'Primary Owner','Prime?']
+iter2 = ['Sales Price','Buyer','Seller']  #sales dataset
 
 with open(property_datasetf, 'r') as property_dataset:
     property_dataset_dict = json.load(property_dataset)
@@ -23,9 +24,31 @@ with open(lease_datasetf, 'r') as lease_dataset:
 with open(sales_datasetf, 'r') as sales_dataset:
     sales_dataset_dict = json.load(sales_dataset)
 
-
-def getID(desiredID):
+def getFromName(Name):
     for item in property_dataset_dict:
+        if item['Bldg Name'] == Name:
+            break
+    return item['PropertyID']
+
+def getFromAdress(Address):
+    for item in property_dataset_dict:
+        if item['Address'] == str(Address):
+            break
+    return item['PropertyID']
+
+
+
+def getID(desiredID, fileName):
+    if fileName == 1:
+        theFile = property_dataset_dict
+    if fileName == 2:
+        theFile = availability_dataset_dict
+    if fileName == 3:
+        theFile =lease_dataset_dict
+    if fileName == 4:
+        theFile =sales_dataset_dict
+
+    for item in theFile:
         propertyID = item['PropertyID']
         if propertyID == str(desiredID):
             break
@@ -33,50 +56,67 @@ def getID(desiredID):
 
 
 def getYear(ID):
-    bldID = getID(ID)
+    bldID = getID(ID,1)
     return bldID['Build Year']
 
 
 def getClass(ID):
-    bldID = getID(ID)
+    bldID = getID(ID,1)
     return bldID['Bldg Class']
 
 
 def getType(ID):
-    bldID = getID(ID)
+    bldID = getID(ID,1)
     return bldID['Property Type']
 
 
 def getSize(ID):
-    bldID = getID(ID)
+    bldID = getID(ID,1)
     return bldID['Bldg Size']
 
 
 def getLeasingCompany(ID):
-    bldID = getID(ID)
+    bldID = getID(ID,1)
     return bldID['Leasing Company']
 
 
 def getPrimaryOwner(ID):
-    bldID = getID(ID)
+    bldID = getID(ID,1)
     return bldID['Primary Owner']
 
 
 def isPrime(ID):
-    bldID = getID(ID)
+    bldID = getID(ID, 1)
     return bldID['Prime?']
 
 
 def getNumOfFloors(ID):
-    bldID = getID(ID)
+    bldID = getID(ID, 1)
     return bldID['Stories']
 
 
 def getAddress(ID):
-    bldID = getID(ID)
+    bldID = getID(ID, 1)
     return  bldID['Address']
 
 
-def getMisc(ID, misc_field=''): # you can search any field now.
-    bldID = getID(ID)
+def getMisc(ID, misc_field='', file = 1): # you can search any field now.
+    bldID = getID(ID, file)
     return bldID[misc_field]
+
+
+x = getFromAdress("I-90 At Randall Rd @ drn")
+x = getFromName("Build-To-Suit, Lots 2,3,4")
+
+finalDict1=json.dumps({z:getMisc(x, misc_field=z, file= 1) for z in iter1})
+finalDict2=json.dumps({y:getMisc(x, misc_field=y, file=4) for y in iter2})
+
+with open('response.json', 'w') as file:
+    file.write(finalDict1)
+    file.write( finalDict2)
+
+    file.close()
+
+
+
+
