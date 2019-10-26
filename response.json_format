@@ -1,0 +1,5 @@
+getData json format
+
+
+[PropertyID','Bldg Name','Address', 'City','State' ,'Bldg Class','Build Year', 'Bldg Size', 'Stories','Property Type', 'Leasing Company', 'Primary Owner','Prime?', 'Subway Service' , 'Walk Score', 'Transit Score'
+         ,'Crime Grade', 'Expansion Potential', 'Sales Price','Buyer','Seller'] 
