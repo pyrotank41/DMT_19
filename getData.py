@@ -1,4 +1,6 @@
 import json
+import sys
+import argparse
 
 property_datasetf = 'property_dataset.json'
 availability_datasetf = 'availability_dataset.json'
@@ -104,9 +106,13 @@ def getMisc(ID, misc_field='', file = 1): # you can search any field now.
     bldID = getID(ID, file)
     return bldID[misc_field]
 
+apiCall = str(sys.argv[0])
+building = str(sys.argv[1])
 
-x = getFromAdress("I-90 At Randall Rd @ drn")
-x = getFromName("Build-To-Suit, Lots 2,3,4")
+if apiCall.lower() == 'address':
+    x = getFromAdress(building)
+if apiCall.lower() == 'name':
+    x = getFromName(building)
 
 finalDict1=json.dumps({z:getMisc(x, misc_field=z, file= 1) for z in iter1})
 finalDict2=json.dumps({y:getMisc(x, misc_field=y, file=4) for y in iter2})
