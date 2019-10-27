@@ -18,7 +18,7 @@ public class LocationInformation
                     Stories,
                     PropertyType,
                     LeasingCompany,
-                    PrimaryOwner,
+                    Manager,
                     IsPrime,
                     SubwayService,
                     WalkScore,
@@ -28,7 +28,9 @@ public class LocationInformation
                     SalesPrice,
                     Buyer,
                     Seller,
-                    FirstYearRent;
+                    FirstYearRent,
+                    FloorNum,
+                    FloorPrice;
     
     public String GetDetails()
     {
@@ -55,10 +57,17 @@ public class LocationInformation
         BuildingSize = decimalFormat.format(BuildingSize);
         
         Description += String.format
-                (
-                "This property is a Class %s %s building, built in %s, standing %s stories tall with a total size of %s SQ ft. ",
-                Class, PropertyType, YearBuilt, Stories, BuildingSize
-                );
+            (
+            "This property is a Class %s %s building, built in %s, standing %s stories tall with a total size of %s SQ ft. ",
+            Class, PropertyType, YearBuilt, Stories, BuildingSize
+            );
+        
+        SalesPrice = decimalFormat.format(SalesPrice);
+        Description += "The property most sold to " + Buyer + " for $" + SalesPrice + " by " + Seller + ". "; 
+        
+        Description += "The property is leased by " + LeasingCompany + " and managed by " + Manager + ". ";
+        
+        Description += "Asking rents are roughly $" + FirstYearRent + "/SQft full service gross.";
         
         return Description;
     }
