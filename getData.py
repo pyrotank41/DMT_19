@@ -40,7 +40,7 @@ def getFromAdress(Address):
     return item['PropertyID']
 
 
-def getID(desiredID, fileName):
+def getID(desiredID, fileName = 1):
     if fileName == 1:
         theFile = property_dataset_dict
     if fileName == 2:
@@ -102,15 +102,15 @@ def getAddress(ID):
     return  bldID['Address']
 
 # #"First Year Rent p":{"s":{"f":{"":""}}}
-# def getFirstYRent(bldID):
-#     print(bldID['First Year Rent p'])
-#     # p = bldID['First Year Rent p']
-#     # s = p['s']
-#     # f = s['f']
-#     # price = f['']
-#     # print(price)
-#     return False
-#     # return s
+def getFirstYRent(bldID):
+    print( bldID['First Year Rent p'])
+    # p = bldID['First Year Rent p']
+    # s = p['s']
+    # f = s['f']
+    # price = f['']
+    # print(price)
+    return False
+    # return s
 
 
 def getMisc(ID, misc_field='', file = 1): # you can search any field now.
@@ -118,6 +118,9 @@ def getMisc(ID, misc_field='', file = 1): # you can search any field now.
     return bldID[misc_field]
 
 x=''
+
+getFirstYRent(getID(4613, 1))
+
 
 finalDict1=({z:getMisc(x, misc_field=z, file= 1) for z in iter1})
 finalDict2=({y:getMisc(x, misc_field=y, file=4) for y in iter2})
