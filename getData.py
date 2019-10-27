@@ -90,7 +90,6 @@ try:
 
 
     def getOpenFloors(ID):
-
         list = {}
         for item in lease_dataset_dict:
             propertyID = item['PropertyID']
@@ -98,11 +97,31 @@ try:
             if propertyID == str(ID):
                 if item['Floor(s)'] != '':
                     list[item['Tenant']]=item['Floor(s)']
-
+        print(list)
         return list
 
 
+    # First Year Rent p":{"s":{"f":{"":"23.18"}}}
+    # def getPrice(ID):
+    #     bldID = getID(ID, 3)
+    #     list = []
+    #     x = 1
+    #     for item in lease_dataset_dict:
+    #         if ID == item['PropertyID']:
+    #             p = item['First Year Rent p']
+    #             s = p['s']
+    #             f = s['f']
+    #             price = f['']
+    #             # list[item['Tenant']] = price
+    #             print(price)
+    #             list[item[str(x+price)]] = price
+    #             x+=x
+    #     print(list)
+
+
     def getMisc(ID, misc_field='', file = 1): # you can search any field now.
+        # if misc_field == 'First Year Rent p':
+        #     return getPrice(ID)
         bldID = getID(ID, file)
         return bldID[misc_field]
 
@@ -110,7 +129,8 @@ try:
     def populateJsonFile(x):
         finalDict1=({z:getMisc(x, misc_field=z, file=1) for z in iter1})
         finalDict2=({y:getMisc(x, misc_field=y, file=4) for y in iter2})
-        finalDict3=({y:getMisc(x, misc_field=y, file=3) for y in iter3})
+        finalDict3=({z:getMisc(x, misc_field=z, file=3) for z in iter3})
+        finalDict3.update(getOpenFloors(x))
 
         finalDict1.update(finalDict2)
         finalDict1.update(finalDict3)
@@ -134,11 +154,14 @@ try:
 
     def getFromAdress(Address):
         for item in property_dataset_dict:
-            if item['Address'].lower() == str(Address).lower():
+            if item['Address'].lower() == Address.lower():
+                # print(item['Address'].lower())
                 break
         return populateJsonFile( item['PropertyID'])
 
-    print(getFromName('225 Wacker'))
+    # print(getFromAdress('225 Wacker Dr'))
+    print(populateJsonFile('4613'))
+    # getPrice('4613')
 
 
 except Exception as e:
