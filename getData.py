@@ -11,6 +11,7 @@ propertyID = []
 iter1 = ['PropertyID','Bldg Name','Address', 'City','State' ,'Bldg Class','Build Year', 'Bldg Size', 'Stories','Property Type', 'Leasing Company', 'Primary Owner','Prime?', 'Subway Service' , 'Walk Score', 'Transit Score'
          ,'Crime Grade', 'Expansion Potential']
 iter2 = ['Sales Price','Buyer','Seller']  #sales dataset
+#iter3 = ['First Year Rent p']# rent info
 
 with open(property_datasetf, 'r') as property_dataset:
     property_dataset_dict = json.load(property_dataset)
@@ -37,7 +38,6 @@ def getFromAdress(Address):
         if item['Address'] == str(Address):
             break
     return item['PropertyID']
-
 
 
 def getID(desiredID, fileName):
@@ -101,24 +101,40 @@ def getAddress(ID):
     bldID = getID(ID, 1)
     return  bldID['Address']
 
+# #"First Year Rent p":{"s":{"f":{"":""}}}
+# def getFirstYRent(bldID):
+#     print(bldID['First Year Rent p'])
+#     # p = bldID['First Year Rent p']
+#     # s = p['s']
+#     # f = s['f']
+#     # price = f['']
+#     # print(price)
+#     return False
+#     # return s
+
 
 def getMisc(ID, misc_field='', file = 1): # you can search any field now.
     bldID = getID(ID, file)
+    if misc_field == 'First Year Rent p':
+        getFirstYRent(bldID)
     return bldID[misc_field]
 
 
-apiCall = str(sys.argv[0])
-building = str(sys.argv[1])
+apiCall = str(sys.argv[1])
+
+building = str(sys.argv[2])
+
 x=''
 if apiCall.lower() == 'address':
-    x = getFromAdress(building)
+    x = getFromAdress('225 W Wacker Dr')
 if apiCall.lower() == 'name':
     x = getFromName(building)
-
 finalDict1=({z:getMisc(x, misc_field=z, file= 1) for z in iter1})
 finalDict2=({y:getMisc(x, misc_field=y, file=4) for y in iter2})
 
-finalDict1 = json.dumps(finalDict1.update(finalDict2))
+finalDict1.update(finalDict2)
+finalDict1 = json.dumps(finalDict1)
+# print(getFirstYRent(x))
 
 with open('response.json', 'w') as file:
     file.write(finalDict1)
