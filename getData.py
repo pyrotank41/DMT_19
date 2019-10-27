@@ -116,32 +116,13 @@ try:
         return list
 
 
-    #First Year Rent p":{"s":{"f":{"":"25"}}}
-    # def getPrices(ID):
-    #     list = {}
-    #     for item in lease_dataset_dict:
-    #         propertyID = item['PropertyID']
-    #
-    #         if propertyID == str(ID):
-    #             p = item['First Year Rent p']
-    #             s = p['s']
-    #             f = s['f']
-    #             price = f['']
-    #             # print(price)
-    #             print(item['Floor(s)'])
-    #             if price != '':
-    #                 print(item['Floor(s)'])
-    #                 list[item['Floor(s)']]=price
-    #         print(list[item['Floor(s)']])
-
-
     def getMisc(ID, misc_field='', file = 1): # you can search any field now.
         bldID = getID(ID, file)
         return bldID[misc_field]
 
 
     def populateJsonFile(x):
-        finalDict1=({z:getMisc(x, misc_field=z, file= 1) for z in iter1})
+        finalDict1=({z:getMisc(x, misc_field=z, file=1) for z in iter1})
         finalDict2=({y:getMisc(x, misc_field=y, file=4) for y in iter2})
         finalDict3=({y:getMisc(x, misc_field=y, file=3) for y in iter3})
 
@@ -156,6 +137,8 @@ try:
         availability_dataset.close()
         lease_dataset.close()
         sales_dataset.close()
+        return finalDict1
+
 
 except Exception as e:
     with open('response.json', 'w') as file:
