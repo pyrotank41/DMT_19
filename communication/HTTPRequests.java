@@ -41,6 +41,7 @@ public class HTTPRequests
         if (status > 299) 
         {
             streamReader = new InputStreamReader(connection.getErrorStream());
+            return null;
         }
         else 
         {
@@ -56,7 +57,14 @@ public class HTTPRequests
             content.append(inputLine);
         }
         
-        System.out.print(content.toString());
+        String contentArray[] = content.toString().split(",");
+        for(int i = 0; i < contentArray.length; i++)
+        {
+            if(contentArray[i].split(":").length > 1)
+                contentArray[i] = contentArray[i].split(":")[1];
+            contentArray[i].replaceAll("\"", "");
+            System.out.println(contentArray[i]);
+        }
         
         input.close();
         connection.disconnect();   

@@ -13,8 +13,8 @@ public class JavaApplication1
         HTTPRequests httpRequest = new HTTPRequests();
         JSONParse parser = new JSONParse();
         
-        StringBuilder newInput = new StringBuilder("225 Wacker Dr");      
-        String cleanedInput = CleanedInput(newInput).toString();
+        StringBuilder newInput = new StringBuilder("225 w wacker Dr");      
+        String cleanedInput = CleanedInput(newInput);
         System.out.print(cleanedInput);
         
         Object jsonFile = httpRequest.SendRequest(cleanedInput);
