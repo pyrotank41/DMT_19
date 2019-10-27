@@ -33,15 +33,65 @@ public class LocationInformation
                     FloorPrice,
                     SisterProperties;
     
+    private int[] placeNewItem(int newItem, int[] nums, int currentIndex)
+    {
+        for(int i = 0; i < nums.length; i++)
+        {
+            if(currentIndex >= nums.length)
+            {
+                if(i == 0 && newItem > nums[i])
+                    nums[i] = newItem;
+                else if(i != 0)
+                {
+                    if(nums[i - 1] > nums[i])
+                    {
+                        int temp = nums[i];
+                        nums[i] = nums[i - 1];
+                        nums[i - 1] = temp;
+                    }
+                }
+            }
+            else
+            {
+               if(nums[i] == 0)
+                   nums[i] = newItem;
+            }
+        }
+        return nums;
+    }
+    // name: sqft: floors
     private String GenerateSisterDetails()
     {
-        //System.out.println(SisterProperties);
+        String sisters[] = SisterProperties.split("\"");
+        String sisterName[] = new String[sisters.length];
+        String sisterSpace[] = new String[sisters.length];
+        String sisterFloor[] = new String[sisters.length];
         
+        int numTopSisters = 0;
+        
+        if((sisters.length > 2))
+            numTopSisters = sisters.length / 2;
+        
+        if(numTopSisters > 5)
+            numTopSisters = 5;
+        
+        int topSisters[] = new int[numTopSisters];
+        
+        for(int i = 0; i < sisters.length ; i++)
+        {
+            sisterName[i] = sisters[i].split(":")[0];
+            sisterSpace[i] = sisters[i].split(":")[1];
+            sisterFloor[i] = sisters[i].split(":")[2];
+            topSisters = placeNewItem(Integer.parseInt(sisterSpace[i]), topSisters, i);
+        }
+        int largestNum = 0;
+
         return null;
     }
 
     public String GetDetails()
     {
+        GenerateSisterDetails();
         String Description = "";
         
         Description += String.format

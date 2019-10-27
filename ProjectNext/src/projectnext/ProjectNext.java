@@ -102,7 +102,7 @@ public class ProjectNext extends Application {
     
     private static boolean ContainsRoadSuffix(String input)
     {
-        String commonRoadSuffixes[] = { " rd", "road", " boulevard", " blvd", " ave", " avenue", " st", " street", " way", " dr", " drive", " pl", " place", " junction", " jct" };
+        String commonRoadSuffixes[] = { "_rd", "_road", "_boulevard", "_blvd", "_ave", "_avenue", "_st", "_street", "_way", "_dr", "_drive", "_pl", "_place", "_junction", "_jct" };
         
         for(int i = 0; i < commonRoadSuffixes.length; i++)
         {
