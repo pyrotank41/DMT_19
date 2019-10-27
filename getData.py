@@ -8,10 +8,9 @@ sales_datasetf = 'sales_dataset.json'
 
 indexOfID = 0
 propertyID = []
-iter1 = ['PropertyID','Bldg Name','Address', 'City', 'State' ,'Bldg Class','Build Year', 'Bldg Size', 'Stories','Property Type', 'Leasing Company', 'Primary Owner', 'Prime?', 'Subway Service' , 'Walk Score', 'Transit Score'
+iter1 = ['PropertyID','Bldg Name','Address', 'City', 'State','Market','Submarket','Micromarket' ,'Bldg Class','Build Year', 'Bldg Size', 'Stories','Property Type', 'Leasing Company', 'Primary Owner', 'Prime?', 'Subway Service' , 'Walk Score', 'Transit Score'
          ,'Crime Grade', 'Expansion Potential']
 iter2 = ['Sales Price','Buyer','Seller']  #sales dataset
-iter3 = ['First Year Rent p']# rent info
 try:
     with open(property_datasetf, 'r') as property_dataset:
         property_dataset_dict = json.load(property_dataset)
@@ -91,37 +90,16 @@ try:
 
     def getOpenFloors(ID):
         list = {}
-        for item in lease_dataset_dict:
+        for item in availability_dataset_dict:
             propertyID = item['PropertyID']
-
+            # print(item['Is Available'])
             if propertyID == str(ID):
-                if item['Floor(s)'] != '':
-                    list[item['Tenant']]=item['Floor(s)']
-        print(list)
+                if item['Is Available'] == 'Yes':
+                    list[item['Floors']] = (item['Rent High']+'#')
         return list
 
 
-    # First Year Rent p":{"s":{"f":{"":"23.18"}}}
-    # def getPrice(ID):
-    #     bldID = getID(ID, 3)
-    #     list = []
-    #     x = 1
-    #     for item in lease_dataset_dict:
-    #         if ID == item['PropertyID']:
-    #             p = item['First Year Rent p']
-    #             s = p['s']
-    #             f = s['f']
-    #             price = f['']
-    #             # list[item['Tenant']] = price
-    #             print(price)
-    #             list[item[str(x+price)]] = price
-    #             x+=x
-    #     print(list)
-
-
-    def getMisc(ID, misc_field='', file = 1): # you can search any field now.
-        # if misc_field == 'First Year Rent p':
-        #     return getPrice(ID)
+    def getMisc(ID, misc_field='', file = 1):
         bldID = getID(ID, file)
         return bldID[misc_field]
 
@@ -129,11 +107,9 @@ try:
     def populateJsonFile(x):
         finalDict1=({z:getMisc(x, misc_field=z, file=1) for z in iter1})
         finalDict2=({y:getMisc(x, misc_field=y, file=4) for y in iter2})
-        finalDict3=({z:getMisc(x, misc_field=z, file=3) for z in iter3})
-        finalDict3.update(getOpenFloors(x))
+        finalDict2.update(getOpenFloors(x))
 
         finalDict1.update(finalDict2)
-        finalDict1.update(finalDict3)
         finalDict1 = json.dumps(finalDict1)
         with open('response.json', 'w') as file:
             file.write(finalDict1)
@@ -161,7 +137,7 @@ try:
 
     # print(getFromAdress('225 Wacker Dr'))
     print(populateJsonFile('4613'))
-    # getPrice('4613')
+    # getOpenFloors('4613')
 
 
 except Exception as e:
