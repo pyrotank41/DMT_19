@@ -102,7 +102,7 @@ public class ProjectNext extends Application {
     
     private static boolean ContainsRoadSuffix(String input)
     {
-        String commonRoadSuffixes[] = { "rd", "road", "boulevard", "blvd", "ave", "avenue", "st", "street", "way", "dr", "drive", "pl", "place", "junction", "jct" };
+        String commonRoadSuffixes[] = { " rd", "road", " boulevard", " blvd", " ave", " avenue", " st", " street", " way", " dr", " drive", " pl", " place", " junction", " jct" };
         
         for(int i = 0; i < commonRoadSuffixes.length; i++)
         {
@@ -425,11 +425,12 @@ public class ProjectNext extends Application {
                 currentListOfProperties[i - 24].FirstYearRent      = contentArray[24];
                 currentListOfProperties[i - 24].FloorPrice         = contentArray[i].split(":")[1].replaceAll("\"", "").replaceAll("#", "").replaceAll("}", "");
                 currentListOfProperties[i - 24].FloorNum           = contentArray[i].split(":")[0].replaceAll("\"", "");
+                currentListOfProperties[i - 24].SisterProperties   = tempStorage;
                 propertyResult(contentArray[1] + " Floor: " + currentListOfProperties[i - 24].FloorNum, 
                         contentArray[2] + ", " + contentArray[3] + ", " + contentArray[4]
                         , "Property ID: " + contentArray[0], currentListOfProperties[i - 24].FloorPrice + "/sqft" , currentListOfProperties[i - 24].GetDetails());
                 addSpacing();
-            }
+                            }
             else
             {
                 tempStorage += contentArray[i].split(":")[0].replaceAll("\"", "") + ":" 

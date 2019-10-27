@@ -30,11 +30,16 @@ public class LocationInformation
                     Seller,
                     FirstYearRent,
                     FloorNum,
-                    FloorPrice;
-    public LocationInformation()
+                    FloorPrice,
+                    SisterProperties;
+    
+    private String GenerateSisterDetails()
     {
+        //System.out.println(SisterProperties);
         
+        return null;
     }
+
     public String GetDetails()
     {
         String Description = "";
@@ -60,10 +65,17 @@ public class LocationInformation
         BuildingSize = decimalFormat.format(Double.valueOf(BuildingSize));
         
         Description += String.format
-                (
-                "This property is a Class %s %s building, built in %s, standing %s stories tall with a total size of %s SQ ft. ",
-                Class, PropertyType, YearBuilt, Stories, BuildingSize
-                );
+            (
+            "This property is a Class %s %s building, built in %s, standing %s stories tall with a total size of %s SQ ft. ",
+            Class, PropertyType, YearBuilt, Stories, BuildingSize
+            );
+        
+        SalesPrice = decimalFormat.format(Double.valueOf(SalesPrice));
+        Description += "The property most sold to " + Buyer + " for $" + SalesPrice + " by " + Seller + ". "; 
+        
+        Description += "The property is leased by " + LeasingCompany + " and managed by " + Manager + ". ";
+        
+        Description += "Asking rents are roughly $" + FloorPrice + "/SQft full service gross.";
         
         return Description;
     }
