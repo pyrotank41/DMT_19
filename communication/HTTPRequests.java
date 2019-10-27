@@ -1,29 +1,23 @@
-package javaapplication1;
-
 import java.io.BufferedReader;
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.net.*;
-import java.lang.Exception;
 
 public class HTTPRequests 
 {
     private URL url;
     private HttpURLConnection connection;
-    private String SERVER_ADDRESS = "http://100.79.2.35:5000/";
+    final private String SERVER_ADDRESS = "http://100.79.2.35:5000/";
     
     // Receive json file
-    public Object SendRequest(String parameters) throws MalformedURLException, IOException
+    public String SendRequest(String parameters) throws MalformedURLException, IOException
     {
         String dataAddress = SERVER_ADDRESS + parameters;
-        
         url = new URL(dataAddress);
         connection = (HttpURLConnection) url.openConnection();     
         connection.setRequestMethod("GET");   
         //connection.setDoOutput(true); 
-        
         connection.setConnectTimeout(5000);
         connection.setReadTimeout(5000);
     
@@ -35,7 +29,6 @@ public class HTTPRequests
         outputStream.close();
 */
         int status = connection.getResponseCode();
-        
         Reader streamReader = null;
         
         if (status > 299) 
@@ -60,6 +53,6 @@ public class HTTPRequests
         input.close();
         connection.disconnect();   
         
-        return content;
+        return content.toString();
     }    
 }
