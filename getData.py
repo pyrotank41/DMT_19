@@ -12,128 +12,150 @@ iter1 = ['PropertyID','Bldg Name','Address', 'City','State' ,'Bldg Class','Build
          ,'Crime Grade', 'Expansion Potential']
 iter2 = ['Sales Price','Buyer','Seller']  #sales dataset
 #iter3 = ['First Year Rent p']# rent info
-
-with open(property_datasetf, 'r') as property_dataset:
-    property_dataset_dict = json.load(property_dataset)
+try:
+    with open(property_datasetf, 'r') as property_dataset:
+        property_dataset_dict = json.load(property_dataset)
     
-with open(availability_datasetf, 'r') as availability_dataset:
-    availability_dataset_dict = json.load(availability_dataset)
+    with open(availability_datasetf, 'r') as availability_dataset:
+        availability_dataset_dict = json.load(availability_dataset)
     
-with open(lease_datasetf, 'r') as lease_dataset:
-    lease_dataset_dict = json.load(lease_dataset)
-    
-with open(sales_datasetf, 'r') as sales_dataset:
-    sales_dataset_dict = json.load(sales_dataset)
+    with open(lease_datasetf, 'r') as lease_dataset:
+        lease_dataset_dict = json.load(lease_dataset)
+
+    with open(sales_datasetf, 'r') as sales_dataset:
+        sales_dataset_dict = json.load(sales_dataset)
 
 
-def getFromName(Name):
-    for item in property_dataset_dict:
-        if item['Bldg Name'] == Name:
-            break
-    return item['PropertyID']
+    def getFromName(Name):
+        for item in property_dataset_dict:
+            if (item['Bldg Name']).lower() == Name.lower():
+                break
+        return item['PropertyID']
 
 
-def getFromAdress(Address):
-    for item in property_dataset_dict:
-        if item['Address'] == str(Address):
-            break
-    return item['PropertyID']
+    def getFromAdress(Address):
+        for item in property_dataset_dict:
+            if item['Address'].lower() == str(Address).lower():
+                break
+        return item['PropertyID']
 
 
-def getID(desiredID, fileName = 1):
-    if fileName == 1:
-        theFile = property_dataset_dict
-    if fileName == 2:
-        theFile = availability_dataset_dict
-    if fileName == 3:
-        theFile =lease_dataset_dict
-    if fileName == 4:
-        theFile =sales_dataset_dict
+    def getID(desiredID, fileName = 1):
+        theFile = ''
+        if fileName == 1:
+            theFile = property_dataset_dict
+        if fileName == 2:
+            theFile = availability_dataset_dict
+        if fileName == 3:
+            theFile =lease_dataset_dict
+        if fileName == 4:
+            theFile =sales_dataset_dict
 
-    for item in theFile:
-        propertyID = item['PropertyID']
-        if propertyID == str(desiredID):
-            break
-    return item
-
-
-def getYear(ID):
-    bldID = getID(ID,1)
-    return bldID['Build Year']
+        for item in theFile:
+            propertyID = item['PropertyID']
+            if propertyID == str(desiredID):
+                return item
+        return {'-1':-1}
+        # return -1
 
 
-def getClass(ID):
-    bldID = getID(ID,1)
-    return bldID['Bldg Class']
+
+    def getYear(ID):
+        bldID = getID(ID,1)
+        return bldID['Build Year']
 
 
-def getType(ID):
-    bldID = getID(ID,1)
-    return bldID['Property Type']
+    def getClass(ID):
+        bldID = getID(ID,1)
+        return bldID['Bldg Class']
 
 
-def getSize(ID):
-    bldID = getID(ID,1)
-    return bldID['Bldg Size']
+    def getType(ID):
+        bldID = getID(ID,1)
+        return bldID['Property Type']
 
 
-def getLeasingCompany(ID):
-    bldID = getID(ID,1)
-    return bldID['Leasing Company']
+    def getSize(ID):
+        bldID = getID(ID,1)
+        return bldID['Bldg Size']
 
 
-def getPrimaryOwner(ID):
-    bldID = getID(ID,1)
-    return bldID['Primary Owner']
+    def getLeasingCompany(ID):
+        bldID = getID(ID,1)
+        return bldID['Leasing Company']
 
 
-def isPrime(ID):
-    bldID = getID(ID, 1)
-    return bldID['Prime?']
+    def getPrimaryOwner(ID):
+        bldID = getID(ID,1)
+        return bldID['Primary Owner']
 
 
-def getNumOfFloors(ID):
-    bldID = getID(ID, 1)
-    return bldID['Stories']
+    def isPrime(ID):
+        bldID = getID(ID, 1)
+        return bldID['Prime?']
 
 
-def getAddress(ID):
-    bldID = getID(ID, 1)
-    return  bldID['Address']
-
-# #"First Year Rent p":{"s":{"f":{"":""}}}
-# def getFirstYRent(bldID):
-#     print( bldID['First Year Rent p'])
-#     # p = bldID['First Year Rent p']
-#     # s = p['s']
-#     # f = s['f']
-#     # price = f['']
-#     # print(price)
-#     return False
-#     # return s
+    def getNumOfFloors(ID):
+        bldID = getID(ID, 1)
+        return bldID['Stories']
 
 
-def getMisc(ID, misc_field='', file = 1): # you can search any field now.
-    bldID = getID(ID, file)
-    return bldID[misc_field]
-
-x=''
-
-# getFirstYRent(getID(4613, 1))
+    def getAddress(ID):
+        bldID = getID(ID, 1)
+        return  bldID['Address']
 
 
-finalDict1=({z:getMisc(x, misc_field=z, file= 1) for z in iter1})
-finalDict2=({y:getMisc(x, misc_field=y, file=4) for y in iter2})
+    def getOpenFloors(ID):
 
-finalDict1.update(finalDict2)
-finalDict1 = json.dumps(finalDict1)
-# print(getFirstYRent(x))
+        list = {}
+        for item in lease_dataset_dict:
+            propertyID = item['PropertyID']
 
-with open('response.json', 'w') as file:
-    file.write(finalDict1)
+            if propertyID == str(ID):
+                if item['Floor(s)'] != '':
+                    list[item['Tenant']]=item['Floor(s)']
 
-file.close()
-property_dataset.close()
-availability_dataset.close()
-lease_dataset.close()
-sales_dataset.close()
+        print(list)
+        return list
+
+
+   #First Year Rent p":{"s":{"f":{"":"25"}}}
+    def getPrices(ID):
+        list = {}
+        for item in lease_dataset_dict:
+            propertyID = item['PropertyID']
+
+            if propertyID == str(ID):
+                ['First Yeat Rent']
+
+
+    def getMisc(ID, misc_field='', file = 1): # you can search any field now.
+        bldID = getID(ID, file)
+        return bldID[misc_field]
+
+    x='4613'
+
+    # getFirstYRent(getID(4613, 3))
+
+
+    finalDict1=({z:getMisc(x, misc_field=z, file= 1) for z in iter1})
+    finalDict2=({y:getMisc(x, misc_field=y, file=4) for y in iter2})
+
+    finalDict1.update(finalDict2)
+    finalDict1 = json.dumps(finalDict1)
+    # print(getFirstYRent(x))
+
+    openfloors = getOpenFloors(4613)
+
+    with open('response.json', 'w') as file:
+        file.write(finalDict1)
+
+    file.close()
+    property_dataset.close()
+    availability_dataset.close()
+    lease_dataset.close()
+    sales_dataset.close()
+except Exception as e:
+    with open('response.json', 'w') as file:
+        file.write("ERROR")
+        file.close()
