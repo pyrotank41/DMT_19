@@ -7,11 +7,14 @@ public class LocationInformation
                     Address,
                     City,
                     State,
-                    Class;
-    public int      YearBuilt,
+                    Market,
+                    SubMarket,
+                    MicroMarket,
+                    Class,
+                    YearBuilt,
                     BuildingSize,
-                    Stories;
-    public String   PropertyType,
+                    Stories,
+                    PropertyType,
                     LeasingCompany,
                     PrimaryOwner,
                     IsPrime,
@@ -19,9 +22,17 @@ public class LocationInformation
                     WalkScore,
                     TransitScore,
                     CrimeGrade,
-                    ExpansionPotential;
-    public int      SalesPrice;
-    public String   Buyer,
-                    Seller;
-    public int      FirstYearRent;
+                    ExpansionPotential,
+                    SalesPrice,
+                    Buyer,
+                    Seller,
+                    FirstYearRent;
+    
+    public String GetDetails()
+    {
+        String Description = "";
+        
+        
+        return null;
+    }
 }
