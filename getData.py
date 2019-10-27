@@ -100,14 +100,14 @@ try:
 
     def getMisc(ID, misc_field='', file = 1):
         bldID = getID(ID, file)
-        return bldID[misc_field]
+        return bldID[misc_field].replace(',','')
 
     def tenantInfo(ID):
         list={}
         count=0
         for item in lease_dataset_dict:
             if str(ID) == item['PropertyID']:
-                list[count] = {item['Lease Size']: item['Floor(s)']}
+                list[item['Tenant'].replace(',','')] = {item['Lease Size']: item['Floor(s)']}
                 count = count+1
         return list
 
