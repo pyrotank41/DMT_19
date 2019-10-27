@@ -94,7 +94,7 @@ try:
             # print(item['Is Available'])
             if propertyID == str(ID):
                 if item['Is Available'] == 'Yes':
-                    list[item['Floors']] = (item['Rent High']+'#')
+                    list[item['Floors'].replace(',','')] = (item['Rent High']+'#').replace(',','')
         return list
 
 
@@ -107,7 +107,7 @@ try:
         count=0
         for item in lease_dataset_dict:
             if str(ID) == item['PropertyID']:
-                list[item['Tenant'].replace(',','')] = {item['Lease Size']: item['Floor(s)']}
+                list[item['Tenant'].replace(',','')] = {item['Lease Size'].replace(',',''): item['Floor(s)'].replace(',','')}
                 count = count+1
         return list
 
