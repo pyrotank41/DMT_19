@@ -36,6 +36,8 @@ public class ProjectNext extends Application {
     private static final TextField            SEARCHBOX                      = new TextField();
     private static final int                  MAX_ID_LENGTH                  = 6;
     private static       LocationInformation  currentListOfProperties[];     
+    private static final int                  WIDTH                          = 550;
+    private static final int                  HEIGHT                         = 700;
     
     //This function gets called at the start of the program for Initialization 
     //of the default stage.
@@ -53,7 +55,7 @@ public class ProjectNext extends Application {
         //Set the background of the ROOT StackPane
         ROOT.setStyle("-fx-background: #FFA750;");
         
-        Scene scene = new Scene(ROOT, 450, 600);
+        Scene scene = new Scene(ROOT, WIDTH, HEIGHT);
         primaryStage.setTitle("NEXT");
         primaryStage.setScene(scene);
         primaryStage.setResizable(false);
@@ -195,8 +197,8 @@ public class ProjectNext extends Application {
         changeBackgroundOnHoverUsingBinding(propertyResult);
         
         // Sets the width and height of each property
-        propertyResult.setMaxWidth(450 * .80);
-        propertyResult.setMinWidth(450 * .80);
+        propertyResult.setMaxWidth(WIDTH * .80);
+        propertyResult.setMinWidth(WIDTH * .80);
         propertyResult.setMaxHeight(50);
         propertyResult.prefWidthProperty().bind(SEARCHRESULTBOX.widthProperty());
         
@@ -255,8 +257,8 @@ public class ProjectNext extends Application {
         propertyPrice.setStyle("-fx-font-size: 16; ");
         
         // Sets the max and min width
-        propertyResult.setMaxWidth(450);
-        propertyResult.setMinWidth(450);
+        propertyResult.setMaxWidth(WIDTH);
+        propertyResult.setMinWidth(WIDTH);
         
         // Sets the constraints on the rows and cols by percent size
         propertyResult.getColumnConstraints().addAll(col0,col1,col1);
@@ -283,20 +285,20 @@ public class ProjectNext extends Application {
         // sets the style for the scroll area.
         scrollInformation.setMaxHeight(400);
         scrollInformation.setMinHeight(400);
-        scrollInformation.setMaxWidth(470);
-        scrollInformation.setMinWidth(470);
+        scrollInformation.setMaxWidth(WIDTH + 20);
+        scrollInformation.setMinWidth(WIDTH + 20);
         scrollInformation.setStyle("-fx-padding: 10px; -fx-background: #FFBC7A;");
         
         // Sets the width on the wrapping text
-        propertyInformation.setWrappingWidth(430);
+        propertyInformation.setWrappingWidth(WIDTH - 20);
         propertyInformation.setStyle("-fx-font-size: 12;");
         
         // Sets the constraints on the cols by percent size
         propertyParagraph.getColumnConstraints().addAll(col4);
         
         // Sets the max and min width for propertyParagraph with the property information
-        propertyParagraph.setMaxWidth(450);
-        propertyParagraph.setMinWidth(450);
+        propertyParagraph.setMaxWidth(WIDTH);
+        propertyParagraph.setMinWidth(WIDTH);
         
         // Adds the scroll panel to the propertyParagraph
         propertyParagraph.add(scrollInformation, 0, 0);
@@ -380,7 +382,11 @@ public class ProjectNext extends Application {
     public static void createLocationInformation(String content)
     {
         SEARCHRESULTBOX.getChildren().clear();
-        String contentArray[] = content.split(",");
+        String contentArray[];
+        if(content != null)
+            contentArray = content.split(",");
+        else
+            return;
         for(int i = 0; i < 24; i++)
         {
             if(contentArray[i].split(":").length > 1)
