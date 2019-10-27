@@ -13,9 +13,10 @@ public class JavaApplication1
         HTTPRequests httpRequest = new HTTPRequests();
         JSONParse parser = new JSONParse();
         
-        StringBuilder newInput = new StringBuilder("1234");      
+        StringBuilder newInput = new StringBuilder("225 Wacker Dr");      
         String cleanedInput = CleanedInput(newInput).toString();
-                
+        System.out.print(cleanedInput);
+        
         Object jsonFile = httpRequest.SendRequest(cleanedInput);
         
         //File jsonTest = new File("response.json");        
@@ -55,9 +56,24 @@ public class JavaApplication1
                 return "pid/";
         }
         
-        if(Character.isLetter(userInput.charAt(0)))
+        if(!ContainsRoadSuffix(userInput))
             return "pn/";
         
         return "pl/";
+    }
+    
+    private static boolean ContainsRoadSuffix(String input)
+    {
+        String commonRoadSuffixes[] = { "rd", "road", "boulevard", "blvd", "ave", "avenue", "st", "street", "way", "dr", "drive", "pl", "place", "junction", "jct" };
+        
+        for(int i = 0; i < commonRoadSuffixes.length; i++)
+        {
+            if(input.toLowerCase().contains(commonRoadSuffixes[i]))
+            {
+                return true;
+            }
+        }
+        
+        return false;
     }
 }
