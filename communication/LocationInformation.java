@@ -1,5 +1,3 @@
-package javaapplication1;
-
 import java.text.DecimalFormat;
 
 public class LocationInformation 
@@ -31,7 +29,10 @@ public class LocationInformation
                     FirstYearRent,
                     FloorNum,
                     FloorPrice;
-    
+    public LocationInformation()
+    {
+        
+    }
     public String GetDetails()
     {
         String Description = "";
@@ -54,20 +55,13 @@ public class LocationInformation
         }
         
         DecimalFormat decimalFormat = new DecimalFormat("#,###");
-        BuildingSize = decimalFormat.format(BuildingSize);
+        BuildingSize = decimalFormat.format(Double.valueOf(BuildingSize));
         
         Description += String.format
-            (
-            "This property is a Class %s %s building, built in %s, standing %s stories tall with a total size of %s SQ ft. ",
-            Class, PropertyType, YearBuilt, Stories, BuildingSize
-            );
-        
-        SalesPrice = decimalFormat.format(SalesPrice);
-        Description += "The property most sold to " + Buyer + " for $" + SalesPrice + " by " + Seller + ". "; 
-        
-        Description += "The property is leased by " + LeasingCompany + " and managed by " + Manager + ". ";
-        
-        Description += "Asking rents are roughly $" + FirstYearRent + "/SQft full service gross.";
+                (
+                "This property is a Class %s %s building, built in %s, standing %s stories tall with a total size of %s SQ ft. ",
+                Class, PropertyType, YearBuilt, Stories, BuildingSize
+                );
         
         return Description;
     }
