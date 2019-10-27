@@ -10,7 +10,7 @@ public class HTTPRequests
 {
     private URL url;
     private HttpURLConnection connection;
-    final private String SERVER_ADDRESS = "http://100.79.2.35:5000/";
+    final private String SERVER_ADDRESS = "http://localhost:5000/";
     
     // Receive json file
     public String SendRequest(String parameters) throws MalformedURLException, IOException
