@@ -9,6 +9,9 @@ public class Parser
 {   
     public void parse(Object file)
     {
+        System.out.print(file);
+        
+        
         String contentArray[] = file.toString().split(",");
         for(int i = 0; i < contentArray.length; i++)
         {
@@ -16,7 +19,8 @@ public class Parser
                 contentArray[i] = contentArray[i].split(":")[1];
             contentArray[i].replaceAll("\"", "");
             System.out.println(contentArray[i]);
-        }      
+        }
+
     }  
     
     public void RetrieveLocations()

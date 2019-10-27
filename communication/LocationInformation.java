@@ -4,8 +4,8 @@ import java.text.DecimalFormat;
 
 public class LocationInformation 
 {
-    public int PropertyID;
-    public String   Name,
+    public String   PropertyID,
+                    Name,
                     Address,
                     City,
                     State,
