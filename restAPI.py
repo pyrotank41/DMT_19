@@ -23,10 +23,11 @@ def propertyName(name = None):
 #get request for location.
 @app.route('/pl/<location>')
 def propertyLocation(location = None):
-    location =  replaceChar(location, "_")
+    location = replaceChar(location, "_")
     return getData.getFromAdress(location)
 
 #get request for id.
 @app.route('/pid/<id>')
 def propertyID(id = None):
-    return getData.getID(id)
+    # print(id)
+    return getData.populateJsonFile(id)
