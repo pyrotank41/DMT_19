@@ -26,20 +26,6 @@ try:
         sales_dataset_dict = json.load(sales_dataset)
 
 
-    def getFromName(Name):
-        for item in property_dataset_dict:
-            if (item['Bldg Name']).lower() == Name.lower():
-                break
-        return item['PropertyID']
-
-
-    def getFromAdress(Address):
-        for item in property_dataset_dict:
-            if item['Address'].lower() == str(Address).lower():
-                break
-        return item['PropertyID']
-
-
     def getID(desiredID, fileName = 1):
         theFile = ''
         if fileName == 1:
@@ -138,6 +124,21 @@ try:
         lease_dataset.close()
         sales_dataset.close()
         return finalDict1
+
+    def getFromName(Name):
+        for item in property_dataset_dict:
+            if (item['Bldg Name']).lower() == Name.lower():
+                break
+        return populateJsonFile(item['PropertyID'])
+
+
+    def getFromAdress(Address):
+        for item in property_dataset_dict:
+            if item['Address'].lower() == str(Address).lower():
+                break
+        return populateJsonFile( item['PropertyID'])
+
+    print(getFromName('225 Wacker'))
 
 
 except Exception as e:
