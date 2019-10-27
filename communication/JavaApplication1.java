@@ -8,21 +8,19 @@ public class JavaApplication1
 {    
     private static int MAX_ID_LENGTH = 6;
     
+    private static HTTPRequests httpRequest = new HTTPRequests();
+    private static Parser parser = new Parser();
+
+    
     public static void main(String[] args) throws IOException 
-    {
-        HTTPRequests httpRequest = new HTTPRequests();
-        JSONParse parser = new JSONParse();
-        
+    {        
         StringBuilder newInput = new StringBuilder("225 w wacker Dr");      
         String cleanedInput = CleanedInput(newInput);
         System.out.print(cleanedInput);
         
-        Object jsonFile = httpRequest.SendRequest(cleanedInput);
+        Object output = httpRequest.SendRequest(cleanedInput);
         
-        //File jsonTest = new File("response.json");        
-        //Object jsonFile = (Object)jsonTest; 
-        
-        //parser.parse(jsonFile);
+        parser.parse(output);
     }
     
     private static String CleanedInput(StringBuilder userInput)
