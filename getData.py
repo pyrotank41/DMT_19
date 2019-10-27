@@ -7,7 +7,7 @@ sales_datasetf = 'sales_dataset.json'
 
 indexOfID = 0
 propertyID = []
-iter1 = ['PropertyID','Bldg Name','Address', 'City', 'State','Market','Submarket','Micromarket' ,'Bldg Class','Build Year', 'Bldg Size', 'Stories','Property Type', 'Leasing Company', 'Primary Owner', 'Prime?', 'Subway Service' , 'Walk Score', 'Transit Score'
+iter1 = ['PropertyID','Bldg Name','Address', 'City', 'State','Market','Submarket','Micromarket' ,'Bldg Class','Build Year', 'Bldg Size', 'Stories','Property Type', 'Leasing Company', 'Management Company', 'Prime?', 'Subway Service' , 'Walk Score', 'Transit Score'
          ,'Crime Grade', 'Expansion Potential']
 iter2 = ['Sales Price','Buyer','Seller']  #sales dataset
 try:
