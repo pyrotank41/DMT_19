@@ -115,20 +115,10 @@ def getAddress(ID):
 
 def getMisc(ID, misc_field='', file = 1): # you can search any field now.
     bldID = getID(ID, file)
-    if misc_field == 'First Year Rent p':
-        getFirstYRent(bldID)
     return bldID[misc_field]
 
-
-apiCall = str(sys.argv[1])
-
-building = str(sys.argv[2])
-
 x=''
-if apiCall.lower() == 'address':
-    x = getFromAdress('225 W Wacker Dr')
-if apiCall.lower() == 'name':
-    x = getFromName(building)
+
 finalDict1=({z:getMisc(x, misc_field=z, file= 1) for z in iter1})
 finalDict2=({y:getMisc(x, misc_field=y, file=4) for y in iter2})
 
