@@ -102,15 +102,15 @@ def getAddress(ID):
     return  bldID['Address']
 
 # #"First Year Rent p":{"s":{"f":{"":""}}}
-def getFirstYRent(bldID):
-    print( bldID['First Year Rent p'])
-    # p = bldID['First Year Rent p']
-    # s = p['s']
-    # f = s['f']
-    # price = f['']
-    # print(price)
-    return False
-    # return s
+# def getFirstYRent(bldID):
+#     print( bldID['First Year Rent p'])
+#     # p = bldID['First Year Rent p']
+#     # s = p['s']
+#     # f = s['f']
+#     # price = f['']
+#     # print(price)
+#     return False
+#     # return s
 
 
 def getMisc(ID, misc_field='', file = 1): # you can search any field now.
@@ -119,7 +119,7 @@ def getMisc(ID, misc_field='', file = 1): # you can search any field now.
 
 x=''
 
-getFirstYRent(getID(4613, 1))
+# getFirstYRent(getID(4613, 1))
 
 
 finalDict1=({z:getMisc(x, misc_field=z, file= 1) for z in iter1})
