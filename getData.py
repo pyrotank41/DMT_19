@@ -94,20 +94,20 @@ try:
             # print(item['Is Available'])
             if propertyID == str(ID):
                 if item['Is Available'] == 'Yes':
-                    list[item['Floors'].replace(',','')] = (item['Rent High']+'#').replace(',','')
+                    list[item['Floors'].replace(',',' ')] = (item['Rent High']+'#').replace(',',' ')
         return list
 
 
     def getMisc(ID, misc_field='', file = 1):
         bldID = getID(ID, file)
-        return bldID[misc_field].replace(',','')
+        return bldID[misc_field].replace(',',' ')
 
     def tenantInfo(ID):
         list={}
         count=0
         for item in lease_dataset_dict:
             if str(ID) == item['PropertyID']:
-                list[item['Tenant'].replace(',','')] = {item['Lease Size'].replace(',',''): item['Floor(s)'].replace(',','')}
+                list[item['Tenant'].replace(',',' ')] = {item['Lease Size'].replace(',',' '): item['Floor(s)'].replace(',',' ')}
                 count = count+1
         return list
 
