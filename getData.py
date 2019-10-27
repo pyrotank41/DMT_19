@@ -145,14 +145,9 @@ try:
         finalDict2=({y:getMisc(x, misc_field=y, file=4) for y in iter2})
         finalDict3=({y:getMisc(x, misc_field=y, file=3) for y in iter3})
 
-
         finalDict1.update(finalDict2)
         finalDict1.update(finalDict3)
         finalDict1 = json.dumps(finalDict1)
-        # print(getFirstYRent(x))
-
-        openfloors = getOpenFloors(4613)
-
         with open('response.json', 'w') as file:
             file.write(finalDict1)
 
@@ -161,6 +156,7 @@ try:
         availability_dataset.close()
         lease_dataset.close()
         sales_dataset.close()
+
 except Exception as e:
     with open('response.json', 'w') as file:
         file.write("ERROR")
