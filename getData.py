@@ -115,7 +115,6 @@ try:
                 if item['Floor(s)'] != '':
                     list[item['Tenant']]=item['Floor(s)']
 
-        print(list)
         return list
 
 
