@@ -1,5 +1,4 @@
 import json
-import sys
 
 property_datasetf = 'property_dataset.json'
 availability_datasetf = 'availability_dataset.json'
@@ -8,10 +7,9 @@ sales_datasetf = 'sales_dataset.json'
 
 indexOfID = 0
 propertyID = []
-iter1 = ['PropertyID','Bldg Name','Address', 'City', 'State' ,'Bldg Class','Build Year', 'Bldg Size', 'Stories','Property Type', 'Leasing Company', 'Primary Owner', 'Prime?', 'Subway Service' , 'Walk Score', 'Transit Score'
+iter1 = ['PropertyID','Bldg Name','Address', 'City', 'State','Market','Submarket','Micromarket' ,'Bldg Class','Build Year', 'Bldg Size', 'Stories','Property Type', 'Leasing Company', 'Primary Owner', 'Prime?', 'Subway Service' , 'Walk Score', 'Transit Score'
          ,'Crime Grade', 'Expansion Potential']
 iter2 = ['Sales Price','Buyer','Seller']  #sales dataset
-iter3 = ['First Year Rent p']# rent info
 try:
     with open(property_datasetf, 'r') as property_dataset:
         property_dataset_dict = json.load(property_dataset)
@@ -90,30 +88,39 @@ try:
 
 
     def getOpenFloors(ID):
-
         list = {}
-        for item in lease_dataset_dict:
+        for item in availability_dataset_dict:
             propertyID = item['PropertyID']
-
+            # print(item['Is Available'])
             if propertyID == str(ID):
-                if item['Floor(s)'] != '':
-                    list[item['Tenant']]=item['Floor(s)']
-
+                if item['Is Available'] == 'Yes':
+                    list[item['Floors']] = (item['Rent High']+'#')
         return list
 
 
-    def getMisc(ID, misc_field='', file = 1): # you can search any field now.
+    def getMisc(ID, misc_field='', file = 1):
         bldID = getID(ID, file)
         return bldID[misc_field]
 
+    def tenantInfo(ID):
+        list={}
+        count=0
+        for item in lease_dataset_dict:
+            if str(ID) == item['PropertyID']:
+                list[count] = {item['Lease Size']: item['Floor(s)']}
+                count = count+1
+        return list
 
-    def populateJsonFile(x):
-        finalDict1=({z:getMisc(x, misc_field=z, file=1) for z in iter1})
-        finalDict2=({y:getMisc(x, misc_field=y, file=4) for y in iter2})
-        finalDict3=({y:getMisc(x, misc_field=y, file=3) for y in iter3})
+
+    def populateJsonFile(ID):
+        finalDict1=({z:getMisc(ID, misc_field=z, file=1) for z in iter1})
+        finalDict2=({y:getMisc(ID, misc_field=y, file=4) for y in iter2})
+
+        finalDict2.update(tenantInfo(ID))
+
+        finalDict2.update(getOpenFloors(ID))
 
         finalDict1.update(finalDict2)
-        finalDict1.update(finalDict3)
         finalDict1 = json.dumps(finalDict1)
         with open('response.json', 'w') as file:
             file.write(finalDict1)
@@ -134,11 +141,14 @@ try:
 
     def getFromAdress(Address):
         for item in property_dataset_dict:
-            if item['Address'].lower() == str(Address).lower():
+            if item['Address'].lower() == Address.lower():
+                # print(item['Address'].lower())
                 break
         return populateJsonFile( item['PropertyID'])
 
-    print(getFromName('225 Wacker'))
+    # print(getFromAdress('225 Wacker Dr'))
+    populateJsonFile('4613')
+    # tenantInfo('4613')
 
 
 except Exception as e:
