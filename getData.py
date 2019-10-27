@@ -8,17 +8,17 @@ sales_datasetf = 'sales_dataset.json'
 
 indexOfID = 0
 propertyID = []
-iter1 = ['PropertyID','Bldg Name','Address', 'City','State' ,'Bldg Class','Build Year', 'Bldg Size', 'Stories','Property Type', 'Leasing Company', 'Primary Owner','Prime?', 'Subway Service' , 'Walk Score', 'Transit Score'
+iter1 = ['PropertyID','Bldg Name','Address', 'City', 'State' ,'Bldg Class','Build Year', 'Bldg Size', 'Stories','Property Type', 'Leasing Company', 'Primary Owner', 'Prime?', 'Subway Service' , 'Walk Score', 'Transit Score'
          ,'Crime Grade', 'Expansion Potential']
 iter2 = ['Sales Price','Buyer','Seller']  #sales dataset
-#iter3 = ['First Year Rent p']# rent info
+iter3 = ['First Year Rent p']# rent info
 try:
     with open(property_datasetf, 'r') as property_dataset:
         property_dataset_dict = json.load(property_dataset)
-    
+
     with open(availability_datasetf, 'r') as availability_dataset:
         availability_dataset_dict = json.load(availability_dataset)
-    
+
     with open(lease_datasetf, 'r') as lease_dataset:
         lease_dataset_dict = json.load(lease_dataset)
 
@@ -57,8 +57,6 @@ try:
                 return item
         return {'-1':-1}
         # return -1
-
-
 
     def getYear(ID):
         bldID = getID(ID,1)
@@ -118,42 +116,51 @@ try:
         return list
 
 
-   #First Year Rent p":{"s":{"f":{"":"25"}}}
-    def getPrices(ID):
-        list = {}
-        for item in lease_dataset_dict:
-            propertyID = item['PropertyID']
-
-            if propertyID == str(ID):
-                ['First Yeat Rent']
+    #First Year Rent p":{"s":{"f":{"":"25"}}}
+    # def getPrices(ID):
+    #     list = {}
+    #     for item in lease_dataset_dict:
+    #         propertyID = item['PropertyID']
+    #
+    #         if propertyID == str(ID):
+    #             p = item['First Year Rent p']
+    #             s = p['s']
+    #             f = s['f']
+    #             price = f['']
+    #             # print(price)
+    #             print(item['Floor(s)'])
+    #             if price != '':
+    #                 print(item['Floor(s)'])
+    #                 list[item['Floor(s)']]=price
+    #         print(list[item['Floor(s)']])
 
 
     def getMisc(ID, misc_field='', file = 1): # you can search any field now.
         bldID = getID(ID, file)
         return bldID[misc_field]
 
-    x='4613'
 
-    # getFirstYRent(getID(4613, 3))
+    def populateJsonFile(x):
+        finalDict1=({z:getMisc(x, misc_field=z, file= 1) for z in iter1})
+        finalDict2=({y:getMisc(x, misc_field=y, file=4) for y in iter2})
+        finalDict3=({y:getMisc(x, misc_field=y, file=3) for y in iter3})
 
 
-    finalDict1=({z:getMisc(x, misc_field=z, file= 1) for z in iter1})
-    finalDict2=({y:getMisc(x, misc_field=y, file=4) for y in iter2})
+        finalDict1.update(finalDict2)
+        finalDict1.update(finalDict3)
+        finalDict1 = json.dumps(finalDict1)
+        # print(getFirstYRent(x))
 
-    finalDict1.update(finalDict2)
-    finalDict1 = json.dumps(finalDict1)
-    # print(getFirstYRent(x))
+        openfloors = getOpenFloors(4613)
 
-    openfloors = getOpenFloors(4613)
+        with open('response.json', 'w') as file:
+            file.write(finalDict1)
 
-    with open('response.json', 'w') as file:
-        file.write(finalDict1)
-
-    file.close()
-    property_dataset.close()
-    availability_dataset.close()
-    lease_dataset.close()
-    sales_dataset.close()
+        file.close()
+        property_dataset.close()
+        availability_dataset.close()
+        lease_dataset.close()
+        sales_dataset.close()
 except Exception as e:
     with open('response.json', 'w') as file:
         file.write("ERROR")
