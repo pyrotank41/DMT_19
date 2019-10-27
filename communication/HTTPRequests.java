@@ -12,29 +12,28 @@ public class HTTPRequests
 {
     private URL url;
     private HttpURLConnection connection;
+    private String SERVER_ADDRESS = "http://100.79.2.35:5000/";
     
-    // sends one of the following
-    // address 1234 Blabla 
-    // name Building Name
-    // id 1234567
-    
-    // Receive one json file
+    // Receive json file
     public Object SendRequest(String parameters) throws MalformedURLException, IOException
     {
-        url = new URL("https://webhook.site/d7282a62-09eb-4263-8461-896b21096966");
+        String dataAddress = SERVER_ADDRESS + parameters;
+        
+        url = new URL(dataAddress);
         connection = (HttpURLConnection) url.openConnection();     
         connection.setRequestMethod("GET");   
-        connection.setDoOutput(true); 
+        //connection.setDoOutput(true); 
         
         connection.setConnectTimeout(5000);
         connection.setReadTimeout(5000);
     
-        DataOutputStream outputStream = new DataOutputStream(connection.getOutputStream());
+       // DataOutputStream outputStream = new DataOutputStream(connection.getOutputStream());
         
+        /*
         outputStream.writeBytes(parameters);
         outputStream.flush();
         outputStream.close();
-
+*/
         int status = connection.getResponseCode();
         
         Reader streamReader = null;
@@ -56,6 +55,8 @@ public class HTTPRequests
         {
             content.append(inputLine);
         }
+        
+        System.out.print(content.toString());
         
         input.close();
         connection.disconnect();   

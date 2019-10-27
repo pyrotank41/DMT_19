@@ -5,19 +5,27 @@
  */
 package javaapplication1;
 
-import com.github.cliftonlabs.json_simple.JsonArray;
-import com.github.cliftonlabs.json_simple.JsonObject;
-import com.github.cliftonlabs.json_simple.*;
+import com.google.gson.*;
 
 public class JSONParse 
 {       
     
+    
     public void parse(Object file)
     {
-        JsonObject fileToBeParsed = (JsonObject)file; 
+        JsonObject newOne = new JsonObject();
+        
+        GsonBuilder builder = new GsonBuilder();
+       // builder.
+        
+        //JsonObject fileToBeParsed = (JsonObject)file; 
         
         //fileToBeParsed.toJson(); // is this necessary? 
        
-       // String newString = newFile.getString(keyName);
+        // newString = fileToBeParsed.getString();
     }  
+    
+    public void RetrieveLocations()
+    {
+    }
 }
