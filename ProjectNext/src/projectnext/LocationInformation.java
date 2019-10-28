@@ -33,17 +33,16 @@ public class LocationInformation
                     FloorPrice,
                     SisterProperties;
     
-    private int[] placeNewItem(int newItem, int[] nums, int currentIndex)
-    {
+    private int[] placeNewItem(int newItem, int[] nums, String sisterSpace[], int currentIndex)    {
         for(int i = 0; i < nums.length; i++)
         {
             if(currentIndex >= nums.length)
             {
-                if(i == 0 && newItem > nums[i])
-                    nums[i] = newItem;
+                if(i == 0 && newItem > Integer.parseInt(sisterSpace[nums[i]]) )
+                    nums[i] = currentIndex;
                 else if(i != 0)
                 {
-                    if(nums[i - 1] > nums[i])
+                    if(Integer.parseInt(sisterSpace[nums[i - 1]]) > Integer.parseInt(sisterSpace[nums[i]]))
                     {
                         int temp = nums[i];
                         nums[i] = nums[i - 1];
@@ -54,8 +53,10 @@ public class LocationInformation
             else
             {
                if(nums[i] == 0)
-                   nums[i] = newItem;
-            }
+               {
+                   nums[i] = currentIndex;
+                   break;
+               }            }
         }
         return nums;
     }
@@ -71,6 +72,8 @@ public class LocationInformation
         
         if((sisters.length > 2))
             numTopSisters = sisters.length / 2;
+                else
+            return null;
         
         if(numTopSisters > 5)
             numTopSisters = 5;
@@ -82,16 +85,29 @@ public class LocationInformation
             sisterName[i] = sisters[i].split(":")[0];
             sisterSpace[i] = sisters[i].split(":")[1];
             sisterFloor[i] = sisters[i].split(":")[2];
-            topSisters = placeNewItem(Integer.parseInt(sisterSpace[i]), topSisters, i);
+            topSisters = placeNewItem(Integer.parseInt(sisterSpace[i]), topSisters, sisterSpace, i);
+        
         }
         int largestNum = 0;
 
-        return null;
+        String sisterDetailsSentence = Name + "'s " + numTopSisters + " largest active tenants are ";
+        
+        for(int i = numTopSisters-1; i >= 0; i--)
+        {
+            sisterDetailsSentence += sisterName[topSisters[i]] + " with " + sisterSpace[topSisters[i]] + "SQ ft";
+            
+            if(i > 1)
+                sisterDetailsSentence += ", ";
+            else if(i == 1)
+                sisterDetailsSentence += ", and ";
+            else
+                sisterDetailsSentence += ". ";
+        }
+        return sisterDetailsSentence;
     }
 
     public String GetDetails()
     {
-        GenerateSisterDetails();
         String Description = "";
         
         Description += String.format
@@ -121,10 +137,13 @@ public class LocationInformation
             );
         
         SalesPrice = decimalFormat.format(Double.valueOf(SalesPrice));
-        Description += "The property most sold to " + Buyer + " for $" + SalesPrice + " by " + Seller + ". "; 
+        Description += "The property most recently sold to " + Buyer + " for $" + SalesPrice + " by " + Seller + ". "; 
         
         Description += "The property is leased by " + LeasingCompany + " and managed by " + Manager + ". ";
         
+        
+                Description += GenerateSisterDetails();
+
         Description += "Asking rents are roughly $" + FloorPrice + "/SQft full service gross.";
         
         return Description;

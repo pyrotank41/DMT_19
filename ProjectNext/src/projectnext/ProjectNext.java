@@ -23,6 +23,7 @@ import javafx.scene.layout.ColumnConstraints;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.binding.Bindings;
 import java.io.IOException;
+import javafx.scene.control.Button;
 import javafx.scene.input.KeyEvent;
 
 
@@ -235,7 +236,7 @@ public class ProjectNext extends Application {
         Text propertyPrice = new Text("$" + price);
         Text propertyInformation = new Text(information);
         ScrollPane scrollInformation  = new ScrollPane(propertyInformation);
-        
+
         // Creates the constraints for the Grid panels rows and cols height and widths
         ColumnConstraints col0 = new ColumnConstraints();
         col0.setPercentWidth(2);
@@ -280,7 +281,7 @@ public class ProjectNext extends Application {
         // Sets the scroll bars policy for scrollInformation
         scrollInformation.setHbarPolicy(ScrollBarPolicy.NEVER);
         scrollInformation.setVbarPolicy(ScrollBarPolicy.AS_NEEDED);
-        
+        scrollInformation.setOnMouseClicked(sendVoice(information));
         // Sets the scroll areas max height as well as the min and max width. Also
         // sets the style for the scroll area.
         scrollInformation.setMaxHeight(400);
@@ -327,6 +328,27 @@ public class ProjectNext extends Application {
         return createPage;
     }
     
+    public static EventHandler<Event> sendVoice(String information)
+    {
+        EventHandler Voice = new EventHandler<Event>() 
+        {
+            @Override
+            public void handle(Event event) 
+            {
+                try
+                {
+                    HTTPRequests httprequest = new HTTPRequests();
+                    httprequest.SendRequest("voice/" + information.replaceAll(" ", "_"));
+                }
+                catch(IOException e)
+                {
+
+                }
+            }
+        };
+        return Voice;
+    }
+    
     
     // Creates a binding to a node for an on hover event
     private static void changeBackgroundOnHoverUsingBinding(Node node) {
@@ -355,8 +377,6 @@ public class ProjectNext extends Application {
                 {
                     case ENTER:
                         try{
-                            //JSONParse parser = new JSONParse();
-                            
                             HTTPRequests httprequest = new HTTPRequests();
                             StringBuilder newInput = new StringBuilder(SEARCHBOX.getText());
                             String cleanedInput = CleanedInput(newInput);
@@ -402,7 +422,6 @@ public class ProjectNext extends Application {
         {
             if(contentArray[i].split(":").length > 1 && contentArray[i].split(":").length < 3)
             {
-                System.out.println(tempStorage);
                 currentListOfProperties[i - 24]                    = new LocationInformation();
                 currentListOfProperties[i - 24].PropertyID         = contentArray[0];
                 currentListOfProperties[i - 24].Name               = contentArray[1];

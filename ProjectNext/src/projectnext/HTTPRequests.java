@@ -17,6 +17,7 @@ public class HTTPRequests
     {
         String dataAddress = SERVER_ADDRESS + parameters;
         url = new URL(dataAddress);
+        System.out.println(parameters);
         connection = (HttpURLConnection) url.openConnection();     
         connection.setRequestMethod("GET");   
         //connection.setDoOutput(true); 
