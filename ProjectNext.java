@@ -1,9 +1,4 @@
 import javafx.application.Application;
-import javafx.scene.control.TextArea;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.SplitPane;
-import javafx.scene.control.Tabimport javafx.application.Application;
 import javafx.geometry.HPos;
 import javafx.scene.layout.GridPane;
 import javafx.scene.Scene;
@@ -25,44 +20,32 @@ import javafx.scene.text.Text;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.binding.Bindings;
+import java.io.IOException;
+import javafx.scene.input.KeyEvent;
 
 
 public class ProjectNext extends Application {
-    private static final TabPane    TABPANE                        = new TabPane();
-    private static final StackPane  ROOT                           = new StackPane();
-    private static final VBox       SEARCHRESULTBOX                = new VBox();     
-    private static final ScrollPane SEARCHRESULTBOXHOLDER          = new ScrollPane(SEARCHRESULTBOX);
-    private static final String     PROPERTYBUTTONBACKGROUNDREG    = "-fx-background-color: #FFBC7A;";
-    private static final String     PROPERTYBUTTONBACKGROUNDHOVER  = "-fx-background-color: #DD6F03;";
-  
+    private static final TabPane              TABPANE                        = new TabPane();
+    private static final StackPane            ROOT                           = new StackPane();
+    private static final VBox                 SEARCHRESULTBOX                = new VBox();     
+    private static final ScrollPane           SEARCHRESULTBOXHOLDER          = new ScrollPane(SEARCHRESULTBOX);
+    private static final String               PROPERTYBUTTONBACKGROUNDREG    = "-fx-background-color: #FFBC7A;";
+    private static final String               PROPERTYBUTTONBACKGROUNDHOVER  = "-fx-background-color: #DD6F03;";
+    private static final TextField            SEARCHBOX                      = new TextField();
+    private static final int                  MAX_ID_LENGTH                  = 6;
+    private static       LocationInformation  currentListOfProperties[];     
     
     //This function gets called at the start of the program for Initialization 
     //of the default stage.
     @Override
-    public void start(Stage primaryStage) 
-    {
+    public void start(Stage primaryStage)
+    {   
+        SEARCHBOX.setOnKeyReleased(globalHotkeys());
         //Creates and add the default home tab
         TABPANE.getTabs().add(createHome());
         //Set the background of the tabs menu
         TABPANE.setStyle("-fx-background: #FFFFFF;");
         
-        for(int i = 0; i < 50; i++)
-        {
-            addSpacing();
-            propertyResult("Bob" + i, "fasdfasdfasdf", "12312", "20.3" , "Accumsan ut placerat tincidunt metus, "
-                    + "sed vel quam mauris nec feugiat a, habitant ligula cras inceptos lacus, nulla ligula dui. "
-                    + "Tortor nam magna nulla quis orci, rutrum lobortis congue molestie, ultricies viverra mauris "
-                    + "pulvinar mauris lobortis, eget fugiat libero convallis vel, metus quisque. Commodo ut nec sed "
-                    + "et fermentum, vitae tincidunt diam fusce, dapibus tincidunt egestas nec quam enim, magna blandit "
-                    + "urna. Risus magna porta, gravida placerat viverra sem sociis ullamcorper, mollis lacus mauris, "
-                    + "metus proin sapien, amet orci ac scelerisque mi. Vivamus consectetuer nullam, donec ut integer odio, "
-                    + "quam nulla. Tempus facilisis do erat et, sodales a, ipsum tristique fusce sed consectetuer in enim. "
-                    + "Venenatis enim, lorem cursus cursus vulputate, erat sit dapibus tortor a, gravida vitae maecenas, "
-                    + "in eu quisque et justo aliquam. Posuere justo, et metus urna in velit integer, at eleifend. "
-                    + "Pellentesque officiis scelerisque odio luctus ac, metus at justo volutpat nibh mauris a. Maecenas "
-                    + "nec ligula quis dolor, adipiscing ultricies hac duis morbi, lectus pharetra rutrum a sed, rutrum per, "
-                    + "aliquam id nec nulla ut nam blandit. Sed aliquam eget phasellus, nibh scelerisque.");
-        }
         //Adds tab panel to ROOT StackPane
         ROOT.getChildren().add(TABPANE);
         //Set the background of the ROOT StackPane
@@ -75,13 +58,67 @@ public class ProjectNext extends Application {
         primaryStage.show();
     }
     
+ 
+    private static String CleanedInput(StringBuilder userInput)
+    {        
+        for(int i = 0; i < userInput.length(); i++)
+        {
+            if(userInput.charAt(i) == ' ')
+            {
+                userInput.setCharAt(i, '_');
+            }
+        }
+ 
+        userInput.insert(0, InputType(userInput.toString()));
+    
+        return userInput.toString();
+    }
+    
+    
+    private static String InputType(String userInput)
+    {
+        Boolean containsLetters = false;
+        
+        if(userInput.length() <= MAX_ID_LENGTH)
+        {
+            for(int i = 0; i < userInput.length(); i++)
+            {
+                if(Character.isLetter(userInput.charAt(i)))
+                    containsLetters = true;
+            }
+            
+            if(!containsLetters)
+                return "pid/";
+        }
+        
+        if(!ContainsRoadSuffix(userInput))
+            return "pn/";
+        
+        return "pl/";
+    }
+    
+    
+    private static boolean ContainsRoadSuffix(String input)
+    {
+        String commonRoadSuffixes[] = { "rd", "road", "boulevard", "blvd", "ave", "avenue", "st", "street", "way", "dr", "drive", "pl", "place", "junction", "jct" };
+        
+        for(int i = 0; i < commonRoadSuffixes.length; i++)
+        {
+            if(input.toLowerCase().contains(commonRoadSuffixes[i]))
+            {
+                return true;
+            }
+        }
+        
+        return false;
+    }
+    
     
     // Creates the default home screen
     public static Tab createHome()
     {
         final Tab        homeTab         = new Tab();       // Initialization of home tab   
         final GridPane   homeScreen      = new GridPane();  // Initialization of home screen Tab
-        final TextField  searchBox       = new TextField(); // Initialization of input searchBox area
         
         
         homeTab.setText("Home");
@@ -89,9 +126,9 @@ public class ProjectNext extends Application {
         homeTab.setClosable(false);
         
         // Sets the max height for the textbox as well as the width. Also make it editable
-        searchBox.setMaxHeight(50);
-        searchBox.prefWidthProperty().bind(homeScreen.widthProperty());
-        searchBox.setEditable(true);
+        SEARCHBOX.setMaxHeight(50);
+        SEARCHBOX.prefWidthProperty().bind(homeScreen.widthProperty());
+        SEARCHBOX.setEditable(true);
         
         // Sets the scroll bars policy as well as asigns content to ScrollPane
         SEARCHRESULTBOXHOLDER.setHbarPolicy(ScrollBarPolicy.NEVER);
@@ -108,13 +145,14 @@ public class ProjectNext extends Application {
         // Adds items to the homescreen as well as blinds the homescreen to the width 
         // of the ROOT width property.
         homeScreen.prefWidthProperty().bind(ROOT.widthProperty());
-        homeScreen.addRow(0, searchBox);
+        homeScreen.addRow(0, SEARCHBOX);
         homeScreen.addRow(1, SEARCHRESULTBOXHOLDER);
         
         // Places the homescreen within the Home Tab
         homeTab.setContent(homeScreen);                           // stores items into home screen tab
         return homeTab;
     }
+    
     
     // Creates a small spacing in the vertical
     public static void addSpacing()
@@ -123,6 +161,7 @@ public class ProjectNext extends Application {
         space.setStyle("-fx-font-size: 4;");
         SEARCHRESULTBOX.getChildren().add(space);
     }
+    
     
     // Creates a button to show up on the main page to be clicked on
     public static void propertyResult(String name, String address, String ID, String price, String information)
@@ -175,8 +214,10 @@ public class ProjectNext extends Application {
         propertyResult.addEventHandler(MouseEvent.MOUSE_CLICKED, createNewPage(name, address, ID, price, information));
         
         SEARCHRESULTBOX.getChildren().add(propertyResult);
+        SEARCHRESULTBOX.setAlignment(Pos.BASELINE_CENTER);
         
     }
+    
     
     // Creates a new page when this function is fired
     public static Tab newSearchResult(String name, String address, String ID, String price, String information)
@@ -239,6 +280,7 @@ public class ProjectNext extends Application {
         // Sets the scroll areas max height as well as the min and max width. Also
         // sets the style for the scroll area.
         scrollInformation.setMaxHeight(400);
+        scrollInformation.setMinHeight(400);
         scrollInformation.setMaxWidth(470);
         scrollInformation.setMinWidth(470);
         scrollInformation.setStyle("-fx-padding: 10px; -fx-background: #FFBC7A;");
@@ -266,6 +308,7 @@ public class ProjectNext extends Application {
         return propertyTab;
     }
     
+    
     // Creates an on click event that creates a new page when a property is chosen
     public static EventHandler<Event> createNewPage(String name, String address, String ID, String price, String information)
     {
@@ -279,6 +322,7 @@ public class ProjectNext extends Application {
         };
         return createPage;
     }
+    
     
     // Creates a binding to a node for an on hover event
     private static void changeBackgroundOnHoverUsingBinding(Node node) {
@@ -294,8 +338,109 @@ public class ProjectNext extends Application {
     );
   }
     
+    
+    private static EventHandler<KeyEvent> globalHotkeys()
+    {
+        return new EventHandler<KeyEvent>() {
+            @Override
+            
+            public void handle(KeyEvent keyEvent)
+            {
+
+                switch(keyEvent.getCode())
+                {
+                    case ENTER:
+                        try{
+                            //JSONParse parser = new JSONParse();
+                            
+                            HTTPRequests httprequest = new HTTPRequests();
+                            StringBuilder newInput = new StringBuilder(SEARCHBOX.getText());
+                            String cleanedInput = CleanedInput(newInput);
+                            String output = httprequest.SendRequest(cleanedInput);
+                            createLocationInformation(output);
+                            SEARCHBOX.clear();
+                        }
+                        catch(IOException e)
+                        {
+                
+                        }
+                    break;
+                    
+                    case ESCAPE:
+                    break;
+                }
+            }
+            
+        };
+    }
+    
+    
+    public static void createLocationInformation(String content)
+    {
+        SEARCHRESULTBOX.getChildren().clear();
+        String contentArray[] = content.split(",");
+        for(int i = 0; i < 24; i++)
+        {
+            if(contentArray[i].split(":").length > 1)
+            {
+                contentArray[i] = contentArray[i].split(":")[1];
+            }
+            contentArray[i] = contentArray[i].replaceAll("\"", "");
+        }
+        LocationInformation []temp = new LocationInformation[contentArray.length - 24];
+        currentListOfProperties = temp;
+        String tempStorage = "";
+        for(int i = 24; i < contentArray.length; i++)
+        {
+            if(contentArray[i].split(":").length > 1 && contentArray[i].split(":").length < 3)
+            {
+                System.out.println(tempStorage);
+                currentListOfProperties[i - 24]                    = new LocationInformation();
+                currentListOfProperties[i - 24].PropertyID         = contentArray[0];
+                currentListOfProperties[i - 24].Name               = contentArray[1];
+                currentListOfProperties[i - 24].Address            = contentArray[2];
+                currentListOfProperties[i - 24].City               = contentArray[3];
+                currentListOfProperties[i - 24].State              = contentArray[4];
+                currentListOfProperties[i - 24].Market             = contentArray[5];
+                currentListOfProperties[i - 24].SubMarket          = contentArray[6];
+                currentListOfProperties[i - 24].MicroMarket        = contentArray[7];
+                currentListOfProperties[i - 24].Class              = contentArray[8];
+                currentListOfProperties[i - 24].YearBuilt          = contentArray[9];
+                currentListOfProperties[i - 24].BuildingSize       = contentArray[10];
+                currentListOfProperties[i - 24].Stories            = contentArray[11];
+                currentListOfProperties[i - 24].PropertyType       = contentArray[12];
+                currentListOfProperties[i - 24].LeasingCompany     = contentArray[13];
+                currentListOfProperties[i - 24].Manager            = contentArray[14];
+                currentListOfProperties[i - 24].IsPrime            = contentArray[15];
+                currentListOfProperties[i - 24].SubwayService      = contentArray[16];
+                currentListOfProperties[i - 24].WalkScore          = contentArray[17];
+                currentListOfProperties[i - 24].TransitScore       = contentArray[18];
+                currentListOfProperties[i - 24].CrimeGrade         = contentArray[19];
+                currentListOfProperties[i - 24].ExpansionPotential = contentArray[20];
+                currentListOfProperties[i - 24].SalesPrice         = contentArray[21];
+                currentListOfProperties[i - 24].Buyer              = contentArray[22];
+                currentListOfProperties[i - 24].Seller             = contentArray[23];
+                currentListOfProperties[i - 24].FirstYearRent      = contentArray[24];
+                currentListOfProperties[i - 24].FloorPrice         = contentArray[i].split(":")[1].replaceAll("\"", "").replaceAll("#", "").replaceAll("}", "");
+                currentListOfProperties[i - 24].FloorNum           = contentArray[i].split(":")[0].replaceAll("\"", "");
+                propertyResult(contentArray[1] + " Floor: " + currentListOfProperties[i - 24].FloorNum, 
+                        contentArray[2] + ", " + contentArray[3] + ", " + contentArray[4]
+                        , "Property ID: " + contentArray[0], currentListOfProperties[i - 24].FloorPrice + "/sqft" , currentListOfProperties[i - 24].GetDetails());
+                addSpacing();
+            }
+            else
+            {
+                tempStorage += contentArray[i].split(":")[0].replaceAll("\"", "") + ":" 
+                        + contentArray[i].split(":")[1].replaceAll("\"", "").replace('{', ' ').replaceAll(" ", "") 
+                        + ":" + contentArray[i].split(":")[2].replaceAll("\"", "").replaceAll("}", "") + "\"";
+            }
+        }
+    }
+    
+    
     // Launchs the main program
-    public static void main(String[] args) {
+    public static void main(String[] args) 
+    {
         launch(args);
     }
     

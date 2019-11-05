@@ -1,3 +1,5 @@
+package projectnext;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -15,6 +17,7 @@ public class HTTPRequests
     {
         String dataAddress = SERVER_ADDRESS + parameters;
         url = new URL(dataAddress);
+        System.out.println(parameters);
         connection = (HttpURLConnection) url.openConnection();     
         connection.setRequestMethod("GET");   
         //connection.setDoOutput(true); 

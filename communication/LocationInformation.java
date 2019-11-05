@@ -1,11 +1,9 @@
-package javaapplication1;
-
 import java.text.DecimalFormat;
 
 public class LocationInformation 
 {
-    public int PropertyID;
-    public String   Name,
+    public String   PropertyID,
+                    Name,
                     Address,
                     City,
                     State,
@@ -31,7 +29,10 @@ public class LocationInformation
                     FirstYearRent,
                     FloorNum,
                     FloorPrice;
-    
+    public LocationInformation()
+    {
+        
+    }
     public String GetDetails()
     {
         String Description = "";
@@ -54,7 +55,7 @@ public class LocationInformation
         }
         
         DecimalFormat decimalFormat = new DecimalFormat("#,###");
-        BuildingSize = decimalFormat.format(BuildingSize);
+        BuildingSize = decimalFormat.format(Double.valueOf(BuildingSize));
         
         Description += String.format
             (
