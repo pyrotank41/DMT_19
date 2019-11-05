@@ -1,5 +1,6 @@
 from flask import Flask, request
 import getData
+import voice
 app = Flask(__name__)
 
 def replaceChar(string, ch):
@@ -31,3 +32,16 @@ def propertyLocation(location = None):
 def propertyID(id = None):
     # print(id)
     return getData.populateJsonFile(id)
+
+#get request for id.
+@app.route('/voice/<string>')
+def runAudio( string = None):
+    # print(id)
+    voice.playVoice(string.replace('_', ' '))
+    print(string);
+    return 'done'
+    # return string
+    # return getData.populateJsonFile(id)
+
+
+
